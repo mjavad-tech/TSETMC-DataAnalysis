@@ -1,0 +1,106 @@
+﻿<Window x:Class="TSETMC_DataAnalysis.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TSETMC_DataAnalysis"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="1000">
+    <Window.Resources>
+        <!-- Style for Buttons -->
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005A9E"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <!-- Add rounded corners -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <!-- Add rounded corners -->
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for DataGrid -->
+        <Style TargetType="DataGrid">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="RowHeight" Value="30"/>
+            <Setter Property="ColumnHeaderHeight" Value="30"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <!-- Style for TextBlocks -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#f0f0f0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Section with Date and Search Box -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10" HorizontalAlignment="Stretch">
+            <Border BorderBrush="Black" BorderThickness="1" Padding="10" Background="#e0e0e0">
+                <TextBlock x:Name="date" Text="Date will appear here" />
+            </Border>
+            <TextBox x:Name="searchBox" Width="200" Height="40" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                     Text="Name or Symbol" Foreground="Gray" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus"/>
+            <Button Content="Search" Click="SearchButton_Click" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        </StackPanel>
+
+        <!-- Main DataGrid Section -->
+        <DataGrid x:Name="stockDataGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Row" Binding="{Binding RowNumber}" Width="Auto"/>
+                <DataGridTextColumn Header="Symbol" Binding="{Binding Symbol}" Width="150"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Close" Binding="{Binding Close}" Width="Auto"/>
+                <DataGridTextColumn Header="Last" Binding="{Binding Last}" Width="Auto"/>
+                <DataGridTextColumn Header="Yesterday Close" Binding="{Binding YesterdayClose}" Width="Auto"/>
+                <DataGridTextColumn Header="Stock Price" Binding="{Binding StockPrice}" Width="Auto"/>
+                <DataGridTextColumn Header="Strike Price" Binding="{Binding StrikePrice}" Width="Auto"/>
+                <DataGridTextColumn Header="Remaining Days" Binding="{Binding RemainsDays}" Width="Auto"/>
+                <DataGridTextColumn Header="Covered Call Profit" Binding="{Binding CoveredCallProfit}" Width="Auto"/>
+                <DataGridTextColumn Header="Covered Call (Not Applied)" Binding="{Binding CoveredCallNotApplied}" Width="Auto"/>
+                <DataGridTextColumn Header="Conversion Profit" Binding="{Binding ConversionProfit}" Width="Auto"/>
+                <DataGridTextColumn Header="Maximum Loss in Long Straddle" Binding="{Binding MaxLossInLongStraddle}" Width="Auto"/>
+                <DataGridTextColumn Header="Minimum Profit in Long Straddle" Binding="{Binding MinProfitInLongStraddle}" Width="Auto"/>
+                <DataGridTextColumn Header="Open Position" Binding="{Binding OpenPosition}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Bottom Section with Navigation and Fetch Button -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button x:Name="btn1" Content="START" Click="btn1_Click"/>
+            <Button x:Name="btnPrevious" Content="Previous" Click="btnPrevious_Click"/>
+            <TextBlock x:Name="pageInfo" Margin="10" VerticalAlignment="Center"/>
+            <Button x:Name="btnNext" Content="Next" Click="btnNext_Click"/>
+        </StackPanel>
+
+        <!-- Loading Indicator -->
+        <StackPanel Grid.RowSpan="4" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" x:Name="loadingContainer">
+            <TextBlock x:Name="loadingIndicator" Text="Loading..." FontSize="24" FontWeight="Bold" Foreground="Red" Visibility="Collapsed" Margin="0,0,0,10"/>
+            <ProgressBar x:Name="progressBar" Height="30" Width="300" Minimum="0" Maximum="100" Visibility="Collapsed" Foreground="Green"/>
+        </StackPanel>
+    </Grid>
+</Window>
